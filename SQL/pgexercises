@@ -66,8 +66,15 @@ select mems.firstname || ' ' || mems.surname as member,
 			(mems.memid != 0 and bks.slots*facs.membercost > 30)
 		)
 order by cost desc;
-------------------------1-1
-
+------------------------1-7
+select distinct mems.firstname || ' ' ||  mems.surname as member,
+	(select recs.firstname || ' ' || recs.surname as recommender
+		from cd.members recs
+		where recs.memid = mems.recommendedby
+	)
+	from
+		cd.members mems
+order by member;
 ------------------------1-1
 
 ------------------------1-1
