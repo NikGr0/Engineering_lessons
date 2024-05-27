@@ -103,9 +103,41 @@ select count(*) from cd.facilities;
 ------------------------2-2
 select count(*) from cd.facilities where guestcost >= 10;
 ------------------------2-3
+select recommendedby, count(*)
+	from cd.members
+	where recommendedby is not null
+	group by recommendedby
+order by recommendedby;
+------------------------2-4
+select facid, sum(slots) as "Total Slots"
+	from cd.bookings
+	group by facid
+order by facid;
+------------------------2-5
+select facid, sum(slots) as "Total Slots"
+	from cd.bookings
+	where
+		starttime >= '2012-09-01'
+		and starttime < '2012-10-01'
+	group by facid
+order by sum(slots);
+------------------------2-6
+select facid, extract(month from starttime) as month, sum(slots) as "Total Slots"
+	from cd.bookings
+	where extract(year from starttime) = 2012
+	group by facid, month
+order by facid, month;
+------------------------2-7
+select count(distinct memid) from cd.bookings
 
-------------------------1-1
+select count(*) from
+	(select distinct memid from cd.bookings) as mems
+------------------------2-8
+select facid, sum(slots) as "Total Slots"
+        from cd.bookings
+        group by facid
+        having sum(slots) > 1000
+        order by facid 
+------------------------2-6
 
-------------------------1-1
-
-------------------------1-1
+------------------------2-6
