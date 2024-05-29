@@ -137,38 +137,15 @@ select facid, sum(slots) as "Total Slots"
         from cd.bookings
         group by facid
         having sum(slots) > 1000
-        order by facid
+        order by facid 
 ------------------------2-9
-select T.name, sum(T.cost) as revenue
-from (
-  select fac.name,
-  	case when bk.memid = 0 then
-  			bk.slots*fac.guestcost
-  		else
-  			bk.slots*fac.membercost
-  	end cost
-  from cd.bookings bk
-  join cd.facilities fac on
-  	fac.facid = bk.facid
-  ) T
-group by T.name
-order by revenue
-------------------------2-10
-select name, revenue from (
-	select facs.name, sum(case
-				when memid = 0 then slots * facs.guestcost
-				else slots * membercost
-			end) as revenue
-		from cd.bookings bks
-		inner join cd.facilities facs
-			on bks.facid = facs.facid
-		group by facs.name
-	) as agg where revenue < 1000
+select facs.name, sum(slots * case
+			when memid = 0 then facs.guestcost
+			else facs.membercost
+		end) as revenue
+	from cd.bookings bks
+	inner join cd.facilities facs
+		on bks.facid = facs.facid
+	group by facs.name
 order by revenue;
-------------------------2-10
-
-------------------------2-10
-
-------------------------2-10
-
-------------------------2-10
+------------------------2-6
